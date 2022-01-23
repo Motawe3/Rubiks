@@ -8,7 +8,6 @@ public class Cube3DFactory : MonoBehaviour
 {
     private static GameObject cubeAnchor;
     private Cube3D currentCube;
-    private Transform cubeHolder;
 
     [Button]
     public void CreateCube(int cubeSize)
@@ -49,7 +48,7 @@ public class Cube3DFactory : MonoBehaviour
     {
         if (!cubeAnchor)
             cubeAnchor = new GameObject("Cube Anchor");
-        currentCube.transform.SetParent(cubeHolder, true);
+        currentCube.transform.SetParent(cubeAnchor.transform);
     }
 
     [Button]

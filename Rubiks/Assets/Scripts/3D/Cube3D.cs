@@ -25,7 +25,7 @@ public class Cube3D : MonoBehaviour
         cubeUnitPrefab = Resources.Load<GameObject>("CubeComponents/CubeUnit");
         cubeCellPrefab = Resources.Load<GameObject>("CubeComponents/CubeCell");
         Create3DCubeUnits();
-        Create3DCells();
+        CreateCells();
     }
 
     private void Create3DCubeUnits()
@@ -47,105 +47,41 @@ public class Cube3D : MonoBehaviour
             }
         }
     }
-    
-    private void Create3DCells()
+
+    private void CreateCells()
     {
-        CreateButtomFace(cubeModel.faces[0]);
-        CreateLeftFace(cubeModel.faces[1]);
-        CreateFrontFace(cubeModel.faces[2]);
-        CreateRightFace(cubeModel.faces[3]);
-        CreateBackFace(cubeModel.faces[4]);
-        CreateTopFace(cubeModel.faces[5]);
+        for (int x = 0; x < Size; x++)
+        {
+            for (int y = 0; y < Size; y++)
+            {
+                // Draw Bottom Cell
+                DrawCell(Vector3.down, cubeModel.faces[0].cells[x, y], unitsArray[x, 0, y].transform);
+                
+                // Draw Left Cell
+                DrawCell(Vector3.left, cubeModel.faces[1].cells[x, y], unitsArray[0,y,x].transform);
+                
+                // Draw Front Cell
+                DrawCell(Vector3.back, cubeModel.faces[2].cells[x, y], unitsArray[x,y,0].transform);
+                
+                // Draw Right Cell
+                DrawCell(Vector3.right, cubeModel.faces[3].cells[x, y], unitsArray[Size - 1,y,x].transform);
+                
+                // Draw Back Cell
+                DrawCell(Vector3.forward, cubeModel.faces[4].cells[x, y], unitsArray[x,y,Size - 1].transform);
+                
+                // Draw Top Cell
+                DrawCell(Vector3.up, cubeModel.faces[5].cells[x, y], unitsArray[x,Size - 1,y].transform);
+            }
+        }
     }
 
-    private void CreateButtomFace(FaceModel faceModel)
+    private void DrawCell(Vector3 direction, CellColor color, Transform parentUnit)
     {
-        for (int x = 0; x < faceModel.cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < faceModel.cells.GetLength(1); y++)
-            {
-                GameObject cell = Instantiate(cubeCellPrefab, unitsArray[x,0,y].transform, false);
-                cell.transform.rotation = Quaternion.LookRotation(Vector3.down);
-                Cell3D cell3D = cell.AddComponent<Cell3D>();
-                cell3D.SetColor(faceModel.cells[x,y]);
-                cells.Add(cell3D);
-            }
-        }
+        GameObject cell = Instantiate(cubeCellPrefab, parentUnit, false);
+        cell.transform.rotation = Quaternion.LookRotation(direction);
+        Cell3D cell3D = cell.AddComponent<Cell3D>();
+        cell3D.SetColor(color);
+        cells.Add(cell3D);
     }
-    
-    private void CreateTopFace(FaceModel faceModel)
-    {
-        for (int x = 0; x < faceModel.cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < faceModel.cells.GetLength(1); y++)
-            {
-                GameObject cell = Instantiate(cubeCellPrefab, unitsArray[x,Size - 1,y].transform, false);
-                cell.transform.rotation = Quaternion.LookRotation(Vector3.up);
-                Cell3D cell3D = cell.AddComponent<Cell3D>();
-                cell3D.SetColor(faceModel.cells[x,y]);
-                cells.Add(cell3D);
-            }
-        }
-    }
-    
-    private void CreateLeftFace(FaceModel faceModel)
-    {
-        for (int x = 0; x < faceModel.cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < faceModel.cells.GetLength(1); y++)
-            {
-                GameObject cell = Instantiate(cubeCellPrefab, unitsArray[0,y,x].transform, false);
-                cell.transform.rotation = Quaternion.LookRotation(Vector3.left);
-                Cell3D cell3D = cell.AddComponent<Cell3D>();
-                cell3D.SetColor(faceModel.cells[x,y]);
-                cells.Add(cell3D);
-            }
-        }
-    }
-    
-    private void CreateRightFace(FaceModel faceModel)
-    {
-        for (int x = 0; x < faceModel.cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < faceModel.cells.GetLength(1); y++)
-            {
-                GameObject cell = Instantiate(cubeCellPrefab, unitsArray[Size - 1,y,x].transform, false);
-                cell.transform.rotation = Quaternion.LookRotation(Vector3.right);
-                Cell3D cell3D = cell.AddComponent<Cell3D>();
-                cell3D.SetColor(faceModel.cells[x,y]);
-                cells.Add(cell3D);
-            }
-        }
-    }
-    
-    private void CreateFrontFace(FaceModel faceModel)
-    {
-        for (int x = 0; x < faceModel.cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < faceModel.cells.GetLength(1); y++)
-            {
-                GameObject cell = Instantiate(cubeCellPrefab, unitsArray[x,y,0].transform, false);
-                cell.transform.rotation = Quaternion.LookRotation(Vector3.back);
-                Cell3D cell3D = cell.AddComponent<Cell3D>();
-                cell3D.SetColor(faceModel.cells[x,y]);
-                cells.Add(cell3D);
-            }
-        }
-    }
-    
-    private void CreateBackFace(FaceModel faceModel)
-    {
-        for (int x = 0; x < faceModel.cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < faceModel.cells.GetLength(1); y++)
-            {
-                GameObject cell = Instantiate(cubeCellPrefab, unitsArray[x,y,Size - 1].transform, false);
-                cell.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-                Cell3D cell3D = cell.AddComponent<Cell3D>();
-                cell3D.SetColor(faceModel.cells[x,y]);
-                cells.Add(cell3D);
-            }
-        }
-    }
-   
+
 }
