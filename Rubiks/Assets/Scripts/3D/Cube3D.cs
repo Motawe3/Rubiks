@@ -7,7 +7,6 @@ using UnityEngine.Serialization;
 
 public class Cube3D : MonoBehaviour
 {
-    [ShowInInspector]
     private CubeModel cubeModel;
     private GameObject cubeUnitPrefab;
     private GameObject cubeCellPrefab;

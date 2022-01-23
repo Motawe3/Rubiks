@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Cube3DFactory : MonoBehaviour
 {
-    private static GameObject cubeAnchor;
+    private Transform cubeAnchor;
     private Cube3D currentCube;
 
     [Button]
@@ -47,7 +47,10 @@ public class Cube3DFactory : MonoBehaviour
     private void AnchorCube()
     {
         if (!cubeAnchor)
-            cubeAnchor = new GameObject("Cube Anchor");
+        {
+            cubeAnchor = GameObject.FindGameObjectWithTag("CubeAnchor").transform;
+        }
+        
         currentCube.transform.SetParent(cubeAnchor.transform);
     }
 
