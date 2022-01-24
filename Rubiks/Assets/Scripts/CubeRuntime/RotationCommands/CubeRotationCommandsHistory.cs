@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-public class CubeRotationCommandsManager
+public class CubeRotationCommandsHistory
 {
     private Cube3D cube3D;
     private Stack<SliceRotationCommand> sliceRotationCommands = new Stack<SliceRotationCommand>();
 
-    public CubeRotationCommandsManager(Cube3D cube3D)
+    public CubeRotationCommandsHistory(Cube3D cube3D)
     {
         this.cube3D = cube3D;
     }
@@ -18,5 +18,15 @@ public class CubeRotationCommandsManager
     public SliceRotationCommand PopLastCommand()
     {
         return sliceRotationCommands.Pop();
+    }
+
+    public bool HasCommands()
+    {
+        return sliceRotationCommands.Count > 0;
+    }
+
+    public void ClearHistory()
+    {
+        sliceRotationCommands.Clear();
     }
 }

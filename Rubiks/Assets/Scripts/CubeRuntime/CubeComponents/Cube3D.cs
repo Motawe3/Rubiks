@@ -13,7 +13,7 @@ public class Cube3D : MonoBehaviour
     public int Size => cubeModel.cubicalSize;
 
     public Unit3D[,,] unitsArray { get; private set; }
-    private List<Cell3D> cells;
+    public List<Cell3D> cells;
 
     public void Initialize(CubeModel cubeModel)
     {
@@ -23,7 +23,7 @@ public class Cube3D : MonoBehaviour
         LoadResourcesPrefabs();
         Create3DCubeUnits();
         CreateCells();
-        AddCubeSliceRotator();
+        AddCubeInteractionComponents();
     }
 
     private void InitializeCollections()
@@ -42,18 +42,18 @@ public class Cube3D : MonoBehaviour
     {
         int size = cubeModel.cubicalSize;
 
-        for (int i = 0; i < size; i++)
+        for (int x = 0; x < size; x++)
         {
-            for (int j = 0; j < size; j++)
+            for (int y = 0; y < size; y++)
             {
-                for (int k = 0; k < size; k++)
+                for (int z = 0; z < size; z++)
                 {
-                    GameObject cubeUnit = Instantiate(cubeUnitPrefab , new Vector3(i , j , k) , Quaternion.identity);
+                    GameObject cubeUnit = Instantiate(cubeUnitPrefab , new Vector3(x , y , z) , Quaternion.identity);
                     cubeUnit.transform.SetParent(transform);
                     
                     Unit3D unit3D = cubeUnit.AddComponent<Unit3D>();
-                    unitsArray[i, j, k] = unit3D;
-                    unit3D.SetIndex(new UnitIndex(i,j,k));
+                    unitsArray[x, y, z] = unit3D;
+                    unit3D.SetIndex(new UnitIndex(x,y,z));
                 }
             }
         }
@@ -95,9 +95,15 @@ public class Cube3D : MonoBehaviour
         cells.Add(cell3D);
     }
     
-    private void AddCubeSliceRotator()
+    private void AddCubeInteractionComponents()
     {
+        CubeInteractionCapture cubeInteractionCapture = gameObject.AddComponent<CubeInteractionCapture>();
+        
         CubeSliceRotator sliceRotator = gameObject.AddComponent<CubeSliceRotator>();
-        sliceRotator.Initialize(this);
+        sliceRotator.Initialize(this,cubeInteractionCapture);
+
+        CubeResultEvaluator cubeResultEvaluator = gameObject.AddComponent<CubeResultEvaluator>();
+        cubeResultEvaluator.Initialize(this, sliceRotator);
     }
+   
 }

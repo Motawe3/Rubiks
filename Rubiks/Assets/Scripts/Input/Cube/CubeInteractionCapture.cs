@@ -7,30 +7,6 @@ using UnityEngine;
 
 public class CubeInteractionCapture : MonoBehaviour
 {
-    #region Singleton
-
-    private static CubeInteractionCapture _instance;
-
-    public static CubeInteractionCapture Instance
-    {
-        get { return _instance; }
-    }
-
-
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-        }
-    }
-
-    #endregion
-    
     [SerializeField,ReadOnly]
     private bool isRotating;
     
