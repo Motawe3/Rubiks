@@ -157,7 +157,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -405,7 +405,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSensitivity: 3
-  gestureCapture: {fileID: 927459014}
   isRotating: 0
   cameraAnchor: {fileID: 1637408026}
   mainCamera: {fileID: 246875973}
@@ -764,8 +763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de12ae968f7fff04c9f357ef846e38db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 3
-  gestureCapture: {fileID: 927459014}
   isRotating: 0
 --- !u!1 &1059807761
 GameObject:
