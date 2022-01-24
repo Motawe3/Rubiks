@@ -12,19 +12,30 @@ public class Cube3D : MonoBehaviour
     private GameObject cubeCellPrefab;
     public int Size => cubeModel.cubicalSize;
 
-    private Cube3D[,,] unitsArray;
+    public Unit3D[,,] unitsArray { get; private set; }
     private List<Cell3D> cells;
 
     public void Initialize(CubeModel cubeModel)
     {
         this.cubeModel = cubeModel;
-        unitsArray = new Cube3D[cubeModel.cubicalSize, cubeModel.cubicalSize, cubeModel.cubicalSize];
-        cells = new List<Cell3D>();
         
-        cubeUnitPrefab = Resources.Load<GameObject>("CubeComponents/CubeUnit");
-        cubeCellPrefab = Resources.Load<GameObject>("CubeComponents/CubeCell");
+        InitializeCollections();
+        LoadResourcesPrefabs();
         Create3DCubeUnits();
         CreateCells();
+        AddCubeSliceRotator();
+    }
+
+    private void InitializeCollections()
+    {
+        unitsArray = new Unit3D[cubeModel.cubicalSize, cubeModel.cubicalSize, cubeModel.cubicalSize];
+        cells = new List<Cell3D>();
+    }
+
+    private void LoadResourcesPrefabs()
+    {
+        cubeUnitPrefab = Resources.Load<GameObject>("CubeComponents/CubeUnit");
+        cubeCellPrefab = Resources.Load<GameObject>("CubeComponents/CubeCell");
     }
 
     private void Create3DCubeUnits()
@@ -39,9 +50,10 @@ public class Cube3D : MonoBehaviour
                 {
                     GameObject cubeUnit = Instantiate(cubeUnitPrefab , new Vector3(i , j , k) , Quaternion.identity);
                     cubeUnit.transform.SetParent(transform);
-                    Cube3D cube3D = cubeUnit.AddComponent<Cube3D>();
-                    unitsArray[i, j, k] = cube3D;
                     
+                    Unit3D unit3D = cubeUnit.AddComponent<Unit3D>();
+                    unitsArray[i, j, k] = unit3D;
+                    unit3D.SetIndex(new UnitIndex(i,j,k));
                 }
             }
         }
@@ -82,5 +94,10 @@ public class Cube3D : MonoBehaviour
         cell3D.SetColor(color);
         cells.Add(cell3D);
     }
-
+    
+    private void AddCubeSliceRotator()
+    {
+        CubeSliceRotator sliceRotator = gameObject.AddComponent<CubeSliceRotator>();
+        sliceRotator.Initialize(this);
+    }
 }

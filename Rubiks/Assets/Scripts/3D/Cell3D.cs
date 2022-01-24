@@ -22,13 +22,13 @@ public class Cell3D : MonoBehaviour
                 SetRendererColor(new Color(0.9f, 0.9f, 0.9f));
                 break;
             case CellColor.Red:
-                SetRendererColor(new Color(0.76f, 0f, 0f));
+                SetRendererColor(new Color(0.67f, 0.05f, 0f));
                 break;
             case CellColor.Blue:
                 SetRendererColor(new Color(0f, 0f, 0.85f));
                 break;
             case CellColor.Orange:
-                SetRendererColor(new Color(1f, 0.6f, 0f));
+                SetRendererColor(new Color(0.82f, 0.45f, 0f));
                 break;
             case CellColor.Green:
                 SetRendererColor(new Color(0f, 0.78f, 0f));

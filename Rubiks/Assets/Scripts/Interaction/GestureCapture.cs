@@ -7,6 +7,30 @@ using UnityEngine.Serialization;
 
 public class GestureCapture : MonoBehaviour
 {
+    #region Singleton
+
+    private static GestureCapture _instance;
+
+    public static GestureCapture Instance
+    {
+        get { return _instance; }
+    }
+
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
+    #endregion
+    
     public Action<bool> OnCapturing;
     public float accHorizontalAxisMovement;
     public float accVerticalAxisMovement;

@@ -319,6 +319,7 @@ GameObject:
   - component: {fileID: 246875974}
   - component: {fileID: 246875973}
   - component: {fileID: 246875972}
+  - component: {fileID: 246875975}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -388,9 +389,26 @@ Transform:
   m_LocalPosition: {x: 11, y: 6.5, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1637408026}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 24, y: -43, z: 0}
+--- !u!114 &246875975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246875971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 996ea67b90b22f942a6b873b09ad6617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSensitivity: 3
+  gestureCapture: {fileID: 927459014}
+  isRotating: 0
+  cameraAnchor: {fileID: 1637408026}
+  mainCamera: {fileID: 246875973}
 --- !u!1 &450372031
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,7 +684,7 @@ GameObject:
   - component: {fileID: 798589250}
   m_Layer: 0
   m_Name: CubeAnchor
-  m_TagString: CubeAnchor
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -695,7 +713,7 @@ GameObject:
   m_Component:
   - component: {fileID: 927459015}
   - component: {fileID: 927459014}
-  - component: {fileID: 927459016}
+  - component: {fileID: 927459017}
   m_Layer: 0
   m_Name: GestureCapture
   m_TagString: Untagged
@@ -715,8 +733,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205a0515507638c4ca2b2eb8780415e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalAxis: 0
-  verticalAxis: 0
+  accHorizontalAxisMovement: 0
+  accVerticalAxisMovement: 0
+  horizontalAxisMovement: 0
+  verticalAxisMovement: 0
   currentDirectionType: 0
 --- !u!4 &927459015
 Transform:
@@ -732,7 +752,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &927459016
+--- !u!114 &927459017
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -741,10 +761,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 927459013}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 996ea67b90b22f942a6b873b09ad6617, type: 3}
+  m_Script: {fileID: 11500000, guid: de12ae968f7fff04c9f357ef846e38db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 3
   gestureCapture: {fileID: 927459014}
+  isRotating: 0
 --- !u!1 &1059807761
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,6 +800,37 @@ Transform:
   - {fileID: 545241700}
   m_Father: {fileID: 461062788}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1637408025
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1637408026}
+  m_Layer: 0
+  m_Name: CameraAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1637408026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637408025}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 246875974}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1909803691
 GameObject:
