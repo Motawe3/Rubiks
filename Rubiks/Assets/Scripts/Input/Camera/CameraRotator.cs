@@ -5,6 +5,9 @@ using UnityEngine.Serialization;
 public class CameraRotator : MonoBehaviour
 {
     [SerializeField]
+    private Camera mainCamera;
+    
+    [SerializeField]
     private float rotationSensitivity = 3.0f;
     
     [SerializeField,ReadOnly]
@@ -12,9 +15,6 @@ public class CameraRotator : MonoBehaviour
     
     [SerializeField]
     private Transform cameraAnchor;
-    
-    [SerializeField]
-    private Camera mainCamera;
 
     private void Start()
     {
