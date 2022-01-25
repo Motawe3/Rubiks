@@ -515,6 +515,8 @@ MonoBehaviour:
   camera: {fileID: 246875973}
   zoomStep: 2
   zoomSpeed: 10
+  minDistance: 10
+  maxDistance: 30
 --- !u!1 &286853626
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a744dec53b717b04b88824e5959a2b1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameSaveController: {fileID: 450372036}
 --- !u!4 &450372033
 Transform:
   m_ObjectHideFlags: 0

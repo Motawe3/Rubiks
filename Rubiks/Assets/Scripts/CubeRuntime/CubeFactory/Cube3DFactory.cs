@@ -8,20 +8,8 @@ public class Cube3DFactory
 {
     private Transform cubeAnchor;
 
-    private void Start()
+    public Cube3D CreateCube(CubeModel cubeModel)
     {
-        CreateCube(3);
-    }
-
-    public Cube3D CreateCube(int cubeSize)
-    {
-        if(cubeSize < 2 || cubeSize > 6)
-        {
-            Debug.LogError("Cube Size Not Supported!");
-            return null;
-        }
-        
-        CubeModel cubeModel = CreateNewCubeModel(cubeSize);
         Cube3D cube3D = CreateCube3D(cubeModel);
         CenterCube(cube3D);
         AnchorCube(cube3D);
@@ -34,13 +22,6 @@ public class Cube3DFactory
         Cube3D cube3D = cubeObj.AddComponent<Cube3D>();
         cube3D.Initialize(cubeModel);
         return cube3D;
-    }
-
-    private CubeModel CreateNewCubeModel(int cubeSize)
-    {
-        CubeModel cubeModel = new CubeModel(cubeSize);
-        cubeModel.ResetCubeColors();
-        return cubeModel;
     }
     
     private void CenterCube(Cube3D cube3D)

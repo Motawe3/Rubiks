@@ -1,18 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GameSaveController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Button]
+    public void SaveCurrentGame()
     {
-        
+        if (GameManager.Instance.currentCube3D != null)
+            SaveCubeModel();
+    }
+    
+    public CubeModel LoadLastGame()
+    {
+        return File.Exists(Application.persistentDataPath + "/CubeInfo.json") ? LoadCubeModel() : null;
+    }
+    
+
+    private void SaveCubeModel()
+    {
+        string cubeModel = JsonUtility.ToJson(GameManager.Instance.currentCube3D.cubeModel);
+        File.WriteAllText(Application.persistentDataPath + "/CubeInfo.json", cubeModel);
     }
 
-    // Update is called once per frame
-    void Update()
+    private CubeModel LoadCubeModel()
     {
-        
+        CubeModel cubeModel = JsonUtility.FromJson<CubeModel>(File.ReadAllText( Application.persistentDataPath + "/CubeInfo.json" ));
+        return cubeModel;
     }
 }

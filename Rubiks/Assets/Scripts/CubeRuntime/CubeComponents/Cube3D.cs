@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class Cube3D : MonoBehaviour
 {
-    private CubeModel cubeModel;
+    public CubeModel cubeModel;
     private GameObject cubeUnitPrefab;
     private GameObject cubeCellPrefab;
     public int Size => cubeModel.cubicalSize;
@@ -50,6 +50,7 @@ public class Cube3D : MonoBehaviour
                 {
                     GameObject cubeUnit = Instantiate(cubeUnitPrefab , new Vector3(x , y , z) , Quaternion.identity);
                     cubeUnit.transform.SetParent(transform);
+                    cubeUnit.name = $"{x} {y} {z}";
                     
                     Unit3D unit3D = cubeUnit.AddComponent<Unit3D>();
                     unitsArray[x, y, z] = unit3D;
@@ -61,27 +62,27 @@ public class Cube3D : MonoBehaviour
 
     private void CreateCells()
     {
-        for (int x = 0; x < Size; x++)
+        for (int y = 0; y < Size; y++)
         {
-            for (int y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
             {
                 // Draw Bottom Cell
-                DrawCell(Vector3.down, cubeModel.faces[0].cells[x, y], unitsArray[x, 0, y].transform);
+                DrawCell(Vector3.down, cubeModel.faces[0].cells[y * Size + x], unitsArray[x, 0, Size - 1 - y].transform);
                 
                 // Draw Left Cell
-                DrawCell(Vector3.left, cubeModel.faces[1].cells[x, y], unitsArray[0,y,x].transform);
+                DrawCell(Vector3.left, cubeModel.faces[1].cells[y * Size + x], unitsArray[0, y, Size - 1 - x].transform);
                 
                 // Draw Front Cell
-                DrawCell(Vector3.back, cubeModel.faces[2].cells[x, y], unitsArray[x,y,0].transform);
+                DrawCell(Vector3.back, cubeModel.faces[2].cells[y * Size + x], unitsArray[x,y,0].transform);
                 
                 // Draw Right Cell
-                DrawCell(Vector3.right, cubeModel.faces[3].cells[x, y], unitsArray[Size - 1,y,x].transform);
+                DrawCell(Vector3.right, cubeModel.faces[3].cells[y * Size + x], unitsArray[Size - 1,y,x].transform);
                 
                 // Draw Back Cell
-                DrawCell(Vector3.forward, cubeModel.faces[4].cells[x, y], unitsArray[x,y,Size - 1].transform);
+                DrawCell(Vector3.forward, cubeModel.faces[4].cells[y * Size + x], unitsArray[Size - 1 - x,y,Size - 1].transform);
                 
                 // Draw Top Cell
-                DrawCell(Vector3.up, cubeModel.faces[5].cells[x, y], unitsArray[x,Size - 1,y].transform);
+                DrawCell(Vector3.up, cubeModel.faces[5].cells[y * Size + x], unitsArray[x,Size - 1,y].transform);
             }
         }
     }

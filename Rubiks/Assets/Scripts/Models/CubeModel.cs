@@ -26,11 +26,11 @@ public class CubeModel
 
     public void ResetCubeColors()
     {
-        faces[0].SetColor(CellColor.White);
-        faces[1].SetColor(CellColor.Red);
-        faces[2].SetColor(CellColor.Blue);
-        faces[3].SetColor(CellColor.Orange);
-        faces[4].SetColor(CellColor.Green);
-        faces[5].SetColor(CellColor.Yellow);
+        faces[0].SetFaceColor(CellColor.White);
+        faces[1].SetFaceColor(CellColor.Red);
+        faces[2].SetFaceColor(CellColor.Blue);
+        faces[3].SetFaceColor(CellColor.Orange);
+        faces[4].SetFaceColor(CellColor.Green);
+        faces[5].SetFaceColor(CellColor.Yellow);
     }
 }

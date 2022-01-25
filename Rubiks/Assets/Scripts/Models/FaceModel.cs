@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 
 [Serializable]
 public class FaceModel
 {
     public int planarSize;
-    public CellColor[,] cells;
-
+    // orderer by 2D coordinates, replaced using [,] because of time it would take to hanlde saving
+    public List<CellColor> cells;
+    
     public FaceModel(int planarSize)
     {
         this.planarSize = planarSize;
@@ -15,17 +17,14 @@ public class FaceModel
     
     private void CreateCells()
     {
-        cells = new CellColor[planarSize , planarSize];
+        cells = new List<CellColor>(new CellColor[(int)Math.Pow(planarSize , 2)]);
     }
 
-    public void SetColor(CellColor color)
+    public void SetFaceColor(CellColor color)
     {
-        for (int x = 0; x < cells.GetLength(0); x++)
+        for (int i = 0; i < cells.Count; i++)
         {
-            for (int y = 0; y < cells.GetLength(1); y++)
-            {
-                cells[x, y] = color;
-            }
+            cells[i] = color;
         }
     }
 }
