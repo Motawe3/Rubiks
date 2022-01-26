@@ -13,8 +13,8 @@ public class CubeSliceRotator : MonoBehaviour
     public static Action OnSliceRotationStarted;
     public static Action OnSliceRotationEnded;
     
-    private static GameObject rotator;
-    private static GameObject destinationRotatorTarget;
+    private GameObject rotator;
+    private GameObject destinationRotatorTarget;
 
     private Cube3D cube3D;
 
@@ -35,7 +35,7 @@ public class CubeSliceRotator : MonoBehaviour
         Destroy(destinationRotatorTarget);
     }
 
-    private static void CreateRotationHelpers()
+    private void CreateRotationHelpers()
     {
         if (!rotator)
             rotator = new GameObject("Rotator");
