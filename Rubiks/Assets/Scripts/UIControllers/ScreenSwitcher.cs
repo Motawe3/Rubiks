@@ -12,7 +12,7 @@ public class ScreenSwitcher : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.OnGameStarted += SetGameScreen;
-        GameManager.Instance.OnGameStarted += SetGameScreen;
+        GameManager.Instance.OnGameEnded += SetTitleScreen;
     }
 
     public void SetTitleScreen()

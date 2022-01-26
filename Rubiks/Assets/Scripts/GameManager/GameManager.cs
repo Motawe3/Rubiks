@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public Cube3D currentCube3D { get; private set; }
     public Action OnGameStarted;
+    public Action OnGameCleared;
     public Action OnGameEnded;
 
     #region Singleton
@@ -37,29 +38,13 @@ public class GameManager : MonoBehaviour
     
     public void StartNewGame(int size)
     {
+        ClearGame();
         CubeModel cubeModel = CreateNewCubeModel(size);
         currentCube3D = Cube3DFactory.CreateCube(cubeModel);
-        OnGameStarted?.Invoke();
-    }
-    
-    public void LoadSavedGame()
-    {
-        CubeModel cubeModel = CubeSaverLoader.LoadLastGame();
-        currentCube3D = Cube3DFactory.CreateCube(cubeModel);
-        OnGameStarted?.Invoke();
-    }
-    
-    public void PauseGame()
-    {
         
-    }
-    
-    public void EndGame()
-    {
-        if (currentCube3D)
-            DestroyCurrentCube();
-        
-        OnGameEnded?.Invoke();
+        TimeManager.Instance.SetTimer(0.0f);
+        OnGameStarted?.Invoke();
+        StartCoroutine(BeginNewGame(cubeModel));
     }
     
     private CubeModel CreateNewCubeModel(int cubeSize)
@@ -67,6 +52,58 @@ public class GameManager : MonoBehaviour
         CubeModel cubeModel = new CubeModel(cubeSize);
         cubeModel.ResetCubeColors();
         return cubeModel;
+    }
+    
+    IEnumerator BeginNewGame(CubeModel cubeModel)
+    {
+        var cubeScrambler = currentCube3D.GetComponent<CubeScrambler>();
+        cubeScrambler.ScrambleCube();
+        while (cubeScrambler.IsScrambling)
+        {
+            yield return null;
+        }
+        
+        yield return null;
+        
+        InteractionManager.Instance.EnablePlayerInteraction(true);
+        OnGameStarted?.Invoke();
+    }
+    
+    public void LoadSavedGame()
+    {
+        ClearGame();
+        SavedGameModel savedGameModel = CubeSaverLoader.LoadLastGame();
+        CubeModel cubeModel = savedGameModel.cubeModel;
+        currentCube3D = Cube3DFactory.CreateCube(cubeModel);
+        
+        TimeManager.Instance.SetTimer(savedGameModel.playedTime);
+        OnGameStarted?.Invoke();    
+        InteractionManager.Instance.EnablePlayerInteraction(true);
+    }
+    
+    public void SaveGame()
+    {
+        CubeSaverLoader.SaveGame(currentCube3D.cubeModel,TimeManager.Instance.PlayTime);
+    }
+    
+    public void PauseGame(bool isPaused)
+    {
+        InteractionManager.Instance.EnablePlayerInteraction(!isPaused);
+    }
+    
+    public void EndGame()
+    {
+        ClearGame();
+        OnGameEnded?.Invoke();
+    }
+
+    private void ClearGame()
+    {
+        InteractionManager.Instance.EnablePlayerInteraction(false);
+        if(!currentCube3D) return;
+        CommandsHistoryManager.ClearHistory();
+        DestroyCurrentCube();
+        OnGameCleared?.Invoke();
     }
    
     private void DestroyCurrentCube()

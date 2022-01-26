@@ -3,25 +3,44 @@ using UnityEngine;
 
 public static class CubeSaverLoader
 {
-    private static void SaveCubeModel(Cube3D cube3D)
+    private static string filePath = "/GameInfo.json";
+    
+    public static void SaveGame(CubeModel cubeModel, double playedTime)
     {
-        string cubeModel = JsonUtility.ToJson(GameManager.Instance.currentCube3D.cubeModel);
-        File.WriteAllText(Application.persistentDataPath + "/CubeInfo.json", cubeModel);
+        SavedGameModel savedGameModel = new SavedGameModel(cubeModel, playedTime);
+        SavedGameModel(savedGameModel);
     }
     
-    public static CubeModel LoadLastGame()
+    public static SavedGameModel LoadLastGame()
     {
-        return File.Exists(Application.persistentDataPath + "/CubeInfo.json") ? LoadCubeModel() : null;
+        return HasGameSaved()? LoadSavedGameModel() : null;
     }
-
+    
     public static bool HasGameSaved()
     {
-        return File.Exists(Application.persistentDataPath + "/CubeInfo.json");
+        return File.Exists(Application.persistentDataPath + filePath);
+    }
+    
+    private static void SavedGameModel(SavedGameModel savedGameModel)
+    {
+        string savedGameStr = JsonUtility.ToJson(savedGameModel);
+        File.WriteAllText(Application.persistentDataPath + filePath, savedGameStr);
     }
 
-    private static CubeModel LoadCubeModel()
+    private static SavedGameModel LoadSavedGameModel()
     {
-        CubeModel cubeModel = JsonUtility.FromJson<CubeModel>(File.ReadAllText( Application.persistentDataPath + "/CubeInfo.json" ));
-        return cubeModel;
+        SavedGameModel savedGameModel = JsonUtility.FromJson<SavedGameModel>(File.ReadAllText( Application.persistentDataPath + filePath ));
+        return savedGameModel;
+    }
+}
+
+public class SavedGameModel
+{
+    public CubeModel cubeModel;
+    public double playedTime;
+    public SavedGameModel(CubeModel cubeModel , double playedTime)
+    {
+        this.cubeModel = cubeModel;
+        this.playedTime = playedTime;
     }
 }

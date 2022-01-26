@@ -7,9 +7,9 @@ public class AudioManager : MonoBehaviour
 {
    [SerializeField]
    private List<AudioClip> cubeRotationClips;
-
    [SerializeField]
    private AudioSource audioSource;
+   public bool AudioEnabled { get; private set; } = true;
 
    private System.Random random = new System.Random();
    
@@ -42,8 +42,14 @@ public class AudioManager : MonoBehaviour
       CubeSliceRotator.OnSliceRotationStarted += PlayRandomRotationClip;
    }
 
+   public void EnableAudio(bool isEnabled)
+   {
+      AudioEnabled = isEnabled;
+   }
+
    public void PlayRandomRotationClip()
    {
-      audioSource.PlayOneShot( cubeRotationClips[random.Next(0 , cubeRotationClips.Count)]);
+      if(AudioEnabled)
+         audioSource.PlayOneShot( cubeRotationClips[random.Next(0 , cubeRotationClips.Count)]);
    }
 }

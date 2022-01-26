@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Cube3D : MonoBehaviour
 {
@@ -100,6 +96,7 @@ public class Cube3D : MonoBehaviour
     {
         CubeInteractionCapture cubeInteractionCapture = gameObject.AddComponent<CubeInteractionCapture>();
         CubeSliceRotator sliceRotator = gameObject.AddComponent<CubeSliceRotator>();
+        CubeScrambler cubeScrambler = gameObject.AddComponent<CubeScrambler>();
         CubeResultEvaluator cubeResultEvaluator = gameObject.AddComponent<CubeResultEvaluator>();
     }
    

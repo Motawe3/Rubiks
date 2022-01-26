@@ -5,13 +5,13 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GestureManager : MonoBehaviour
+public class InteractionManager : MonoBehaviour
 {
     #region Singleton
 
-    private static GestureManager _instance;
+    private static InteractionManager _instance;
 
-    public static GestureManager Instance
+    public static InteractionManager Instance
     {
         get { return _instance; }
     }
@@ -31,16 +31,28 @@ public class GestureManager : MonoBehaviour
 
     #endregion
 
+
+    public Action<bool> OnInteractionAllowed;
     public Action<bool> OnCapturing;
     [ShowInInspector, ReadOnly] public float accHorizontalAxisMovement { get; private set; }
     [ShowInInspector, ReadOnly] public float accVerticalAxisMovement { get; private set; }
     [ShowInInspector, ReadOnly] public float horizontalAxisMovement { get; private set; }
     [ShowInInspector, ReadOnly] public float verticalAxisMovement { get; private set; }
     [ShowInInspector, ReadOnly] public DirectionType currentDirectionType { get; private set; }
+    public bool InteractionAllowed { get; private set; }
 
+    public void EnablePlayerInteraction(bool isAllowed)
+    {
+        InteractionAllowed = isAllowed;
+        OnInteractionAllowed?.Invoke(InteractionAllowed);
+    }
+    
     private void Update()
     {
-        EvaluateCaturing();
+        if (InteractionAllowed)
+            EvaluateCaturing();
+        else
+            StopCapturing();
     }
 
     private void EvaluateCaturing()

@@ -14,6 +14,11 @@ public class CubeResultEvaluator : MonoBehaviour
         CubeSliceRotator.OnSliceRotationEnded += ReEvaluateCube;
     }
 
+    private void OnDestroy()
+    {
+        CubeSliceRotator.OnSliceRotationEnded -= ReEvaluateCube;
+    }
+
     void ReEvaluateCube()
     {
         EvaluateCubeModel();

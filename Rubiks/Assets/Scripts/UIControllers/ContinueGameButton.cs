@@ -11,7 +11,6 @@ public class ContinueGameButton : MonoBehaviour
     private void Start()
     {
         continueButton.onClick.AddListener(LoadGame);
-        EnableContinueButton(CubeSaverLoader.HasGameSaved());
     }
 
     private void LoadGame()
@@ -19,8 +18,4 @@ public class ContinueGameButton : MonoBehaviour
         GameManager.Instance.LoadSavedGame();
     }
 
-    public void EnableContinueButton(bool isEnabled)
-    {
-        continueButton.interactable = isEnabled;
-    }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -24,6 +25,12 @@ public class CubeSliceRotator : MonoBehaviour
         
         CommandsHistoryManager.OnCommandPushed += ExecuteRotation;
         CommandsHistoryManager.OnCommandPoped += ExecuteRotation;
+    }
+
+    private void OnDestroy()
+    {
+        CommandsHistoryManager.OnCommandPushed -= ExecuteRotation;
+        CommandsHistoryManager.OnCommandPoped -= ExecuteRotation;
     }
 
     private static void CreateRotationHelpers()

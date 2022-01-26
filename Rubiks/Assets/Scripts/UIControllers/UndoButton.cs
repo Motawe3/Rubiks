@@ -11,18 +11,25 @@ public class UndoButton : MonoBehaviour
 
     void Start()
     {
-        undoButton.onClick.AddListener(UndoRequested);
+        undoButton.onClick.AddListener(PerformUndo);
+        InteractionManager.Instance.OnInteractionAllowed += UpdateVisibility;
+        CommandsHistoryManager.OnHistoryUpdated += UpdateUndoIcon;
+        UpdateUndoIcon();
     }
 
-    private void UndoRequested()
+    private void UpdateVisibility(bool isInteractive)
     {
-        
+        gameObject.SetActive(isInteractive);
     }
 
-
-    // Update is called once per frame
-    void Update()
+    private void PerformUndo()
     {
-        
+        if(!CubeSliceRotator.isCubeSliceRotating)
+            CommandsHistoryManager.PopCommand();
+    }
+
+    void UpdateUndoIcon()
+    {
+        undoIcon.color = CommandsHistoryManager.HasCommands()? Color.white : Color.black;
     }
 }

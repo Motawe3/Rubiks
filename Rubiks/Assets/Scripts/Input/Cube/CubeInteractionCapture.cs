@@ -21,12 +21,12 @@ public class CubeInteractionCapture : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        GestureManager.Instance.OnCapturing += UpdateIsRotating;
+        InteractionManager.Instance.OnCapturing += UpdateIsRotating;
     }
 
     private void OnDestroy()
     {
-        GestureManager.Instance.OnCapturing -= UpdateIsRotating;
+        InteractionManager.Instance.OnCapturing -= UpdateIsRotating;
     }
 
     private void UpdateIsRotating(bool isCapturing)
