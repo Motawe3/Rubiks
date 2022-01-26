@@ -5,14 +5,13 @@ using UnityEngine;
 
 public class CubeResultEvaluator : MonoBehaviour
 {
+    private Cube3D cube3D;
     public static Action OnCubeSolved;
     
-    private Cube3D cube3D;
-    
-    public void Initialize(Cube3D cube3D, CubeSliceRotator cubeSliceRotator)
+    public void Start()
     {
-        this.cube3D = cube3D;
-        cubeSliceRotator.OnSliceRotated += ReEvaluateCube;
+        cube3D = GameManager.Instance.currentCube3D;
+        CubeSliceRotator.OnSliceRotationEnded += ReEvaluateCube;
     }
 
     void ReEvaluateCube()

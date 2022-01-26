@@ -5,13 +5,13 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GestureCapture : MonoBehaviour
+public class GestureManager : MonoBehaviour
 {
     #region Singleton
 
-    private static GestureCapture _instance;
+    private static GestureManager _instance;
 
-    public static GestureCapture Instance
+    public static GestureManager Instance
     {
         get { return _instance; }
     }
@@ -30,14 +30,14 @@ public class GestureCapture : MonoBehaviour
     }
 
     #endregion
-    
+
     public Action<bool> OnCapturing;
-    public float accHorizontalAxisMovement;
-    public float accVerticalAxisMovement;
-    public float horizontalAxisMovement;
-    public float verticalAxisMovement;
-    public DirectionType currentDirectionType;
-    
+    [ShowInInspector, ReadOnly] public float accHorizontalAxisMovement { get; private set; }
+    [ShowInInspector, ReadOnly] public float accVerticalAxisMovement { get; private set; }
+    [ShowInInspector, ReadOnly] public float horizontalAxisMovement { get; private set; }
+    [ShowInInspector, ReadOnly] public float verticalAxisMovement { get; private set; }
+    [ShowInInspector, ReadOnly] public DirectionType currentDirectionType { get; private set; }
+
     private void Update()
     {
         EvaluateCaturing();

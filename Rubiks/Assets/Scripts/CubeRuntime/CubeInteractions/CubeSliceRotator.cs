@@ -7,59 +7,43 @@ using UnityEngine;
 
 public class CubeSliceRotator : MonoBehaviour
 {
-    public Action OnSliceRotated;
-    private Cube3D cube3D;
-    private CubeRotationCommandsHistory cubeRotationCommandsHistory;
-    private CubeInteractionCapture cubeInteractionCapture;
-    private bool isRotating;
-    private GameObject rotator;
-    private GameObject destinationRotatorTarget;
-
-    public void Initialize(Cube3D cube3D, CubeInteractionCapture cubeInteractionCapture)
-    {
-        this.cube3D = cube3D;
-        this.cubeInteractionCapture = cubeInteractionCapture;
-        cubeRotationCommandsHistory = new CubeRotationCommandsHistory(cube3D);
-        rotator = new GameObject("Rotator");
-        destinationRotatorTarget = new GameObject("DestinationRotatorTarget");
-    }
+    public static bool isCubeSliceRotating;
     
-    private void Start()
-    {
-        cubeInteractionCapture.OnCubeRotationCaptured += ExecuteRotation;
-    }
+    public static Action OnSliceRotationStarted;
+    public static Action OnSliceRotationEnded;
+    
+    private static GameObject rotator;
+    private static GameObject destinationRotatorTarget;
 
-    private void OnDestroy()
-    {
-        cubeInteractionCapture.OnCubeRotationCaptured -= ExecuteRotation;
-    }
+    private Cube3D cube3D;
 
-    private void ExecuteRotation(Vector3 hitUnitPosition, Vector3 hitFacePosition, Vector3 rotationDirection)
+    public void Start()
     {
-        if(rotationDirection == Vector3.zero || isRotating) return;
+        cube3D = GameManager.Instance.currentCube3D;
+        CreateRotationHelpers();
         
-        isRotating = true;
+        CommandsHistoryManager.OnCommandPushed += ExecuteRotation;
+        CommandsHistoryManager.OnCommandPoped += ExecuteRotation;
+    }
 
-        SliceRotationCommand rotationCommand = new SliceRotationCommand(hitUnitPosition, hitFacePosition, rotationDirection);
-        cubeRotationCommandsHistory.PushCommand(rotationCommand);
+    private static void CreateRotationHelpers()
+    {
+        if (!rotator)
+            rotator = new GameObject("Rotator");
+        if (!destinationRotatorTarget)
+            destinationRotatorTarget = new GameObject("DestinationRotatorTarget");
+    }
 
+    private void ExecuteRotation(SliceRotationCommand rotationCommand)
+    {
+        isCubeSliceRotating = true;
         StartCoroutine(RotateUnits(rotationCommand));
     }
     
-    [Button]
-    private void UndoLastRotation()
-    {
-        if(cubeRotationCommandsHistory.HasCommands() == false || isRotating) return;
-        
-        isRotating = true;
-        
-        SliceRotationCommand rotationCommand = cubeRotationCommandsHistory.PopLastCommand();
-        StartCoroutine(RotateUnits(rotationCommand.UndoCommand()));
-    }
-
-    
     private IEnumerator RotateUnits(SliceRotationCommand rotationCommand)
     {
+        OnSliceRotationStarted?.Invoke();
+        
         var slicePlane = CreateRotationPlane(rotationCommand);
         var sliceUnits = GetSliceUnitsOnPlane(slicePlane);
         
@@ -75,9 +59,8 @@ public class CubeSliceRotator : MonoBehaviour
 
         ParentSliceToCube(sliceUnits);
         
-        isRotating = false;
-        
-        OnSliceRotated?.Invoke();
+        isCubeSliceRotating = false;
+        OnSliceRotationEnded?.Invoke();
     }
 
     private static Plane CreateRotationPlane(SliceRotationCommand rotationCommand)

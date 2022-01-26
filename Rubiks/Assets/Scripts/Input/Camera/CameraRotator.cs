@@ -18,12 +18,12 @@ public class CameraRotator : MonoBehaviour
 
     private void Start()
     {
-        GestureCapture.Instance.OnCapturing += UpdateIsRotating;
+        GestureManager.Instance.OnCapturing += UpdateIsRotating;
     }
 
     private void OnDestroy()
     {
-        GestureCapture.Instance.OnCapturing -= UpdateIsRotating;
+        GestureManager.Instance.OnCapturing -= UpdateIsRotating;
     }
 
     private void UpdateIsRotating(bool isCapturing)
@@ -47,8 +47,8 @@ public class CameraRotator : MonoBehaviour
 
     private void RotateCameraAnchor()
     {
-        float rotationX = GestureCapture.Instance.horizontalAxisMovement * rotationSensitivity;
-        float rotationY = GestureCapture.Instance.verticalAxisMovement * rotationSensitivity;
+        float rotationX = GestureManager.Instance.horizontalAxisMovement * rotationSensitivity;
+        float rotationY = GestureManager.Instance.verticalAxisMovement * rotationSensitivity;
         
         cameraAnchor.RotateAround(Vector3.zero, Vector3.up , rotationX); 
         cameraAnchor.RotateAround(Vector3.zero, mainCamera.transform.right , -rotationY); 

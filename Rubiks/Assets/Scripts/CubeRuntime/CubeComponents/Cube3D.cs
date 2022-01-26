@@ -23,7 +23,7 @@ public class Cube3D : MonoBehaviour
         LoadResourcesPrefabs();
         Create3DCubeUnits();
         CreateCells();
-        AddCubeInteractionComponents();
+        AddCubeComponents();
     }
 
     private void InitializeCollections()
@@ -96,15 +96,11 @@ public class Cube3D : MonoBehaviour
         cells.Add(cell3D);
     }
     
-    private void AddCubeInteractionComponents()
+    private void AddCubeComponents()
     {
         CubeInteractionCapture cubeInteractionCapture = gameObject.AddComponent<CubeInteractionCapture>();
-        
         CubeSliceRotator sliceRotator = gameObject.AddComponent<CubeSliceRotator>();
-        sliceRotator.Initialize(this,cubeInteractionCapture);
-
         CubeResultEvaluator cubeResultEvaluator = gameObject.AddComponent<CubeResultEvaluator>();
-        cubeResultEvaluator.Initialize(this, sliceRotator);
     }
    
 }

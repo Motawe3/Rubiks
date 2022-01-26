@@ -7,37 +7,32 @@ using UnityEngine;
 
 public class CubeInteractionCapture : MonoBehaviour
 {
-    [SerializeField,ReadOnly]
-    private bool isRotating;
+    private bool isInteraction;
     
     private Camera mainCamera;
     
     private GameObject firstHitFace;
     private Vector3 firstHitPoint;
-    
     private GameObject secondHitFace;
     private Vector3 secondHitPoint;
-
     private Vector3 interactionDirection;
     private Vector3 rotationDirection;
 
-    public Action<Vector3 , Vector3, Vector3> OnCubeRotationCaptured;
-    
     private void Start()
     {
         mainCamera = Camera.main;
-        GestureCapture.Instance.OnCapturing += UpdateIsRotating;
+        GestureManager.Instance.OnCapturing += UpdateIsRotating;
     }
 
     private void OnDestroy()
     {
-        GestureCapture.Instance.OnCapturing -= UpdateIsRotating;
+        GestureManager.Instance.OnCapturing -= UpdateIsRotating;
     }
 
     private void UpdateIsRotating(bool isCapturing)
     {
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (isCapturing && Physics.Raycast(ray, out var hit) && hit.collider.CompareTag("CubeCell"))
+        if (isCapturing && !CubeSliceRotator.isCubeSliceRotating && Physics.Raycast(ray, out var hit) && hit.collider.CompareTag("CubeCell"))
         {
             StartCapturingInteraction(hit);
         }
@@ -49,7 +44,7 @@ public class CubeInteractionCapture : MonoBehaviour
 
     private void StartCapturingInteraction(RaycastHit hit)
     {
-        isRotating = true;
+        isInteraction = true;
         firstHitFace = hit.collider.gameObject;
         firstHitPoint = hit.point;
         StartCoroutine(CaptureInteraction());
@@ -57,20 +52,21 @@ public class CubeInteractionCapture : MonoBehaviour
     
     private void StopCapturingInteraction()
     {
-        isRotating = false;
+        isInteraction = false;
     }
 
     IEnumerator CaptureInteraction()
     {
-        GameObject secondHitUnit = firstHitFace;
+        GameObject hitFace = firstHitFace;
         
-        while (secondHitUnit == firstHitFace && isRotating)
+        while (hitFace == firstHitFace && isInteraction)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit) && hit.collider.CompareTag("CubeCell"))
             {
-                secondHitUnit = hit.collider.gameObject;
-                secondHitPoint = hit.point;
+                hitFace = hit.collider.gameObject;
+                if(hitFace == firstHitFace)
+                    secondHitPoint = hit.point;
             }
             
             yield return null;
@@ -79,7 +75,7 @@ public class CubeInteractionCapture : MonoBehaviour
         SliceRotationCaptured();
     }
 
-    public void SliceRotationCaptured()
+    private void SliceRotationCaptured()
     {
         Vector3 hitUnitPosition = firstHitFace.transform.position;
         Vector3 hitFacePosition = firstHitFace.transform.TransformPoint(firstHitFace.GetComponent<BoxCollider>().center);
@@ -87,21 +83,22 @@ public class CubeInteractionCapture : MonoBehaviour
         interactionDirection = secondHitPoint - firstHitPoint;
         rotationDirection = GetRelativeUnitDirection(interactionDirection , firstHitFace.transform);
         
-        OnCubeRotationCaptured?.Invoke(hitUnitPosition , hitFacePosition, rotationDirection);
+        if(rotationDirection != Vector3.zero)
+            CommandsHistoryManager.PushCommand(new SliceRotationCommand(hitUnitPosition , hitFacePosition, rotationDirection));
     }
 
     private Vector3 GetRelativeUnitDirection(Vector3 interactionDirection , Transform unitTransform)
     {
-        if (Vector3.Dot(interactionDirection, unitTransform.up) > 0.3f)
+        if (Vector3.Dot(interactionDirection, unitTransform.up) > 0.2f)
             return unitTransform.up;
         
-        if (Vector3.Dot(interactionDirection, unitTransform.up) < -0.3f)
+        if (Vector3.Dot(interactionDirection, unitTransform.up) < -0.2f)
             return - unitTransform.up;
         
-        if (Vector3.Dot(interactionDirection, unitTransform.right) > 0.3f)
+        if (Vector3.Dot(interactionDirection, unitTransform.right) > 0.2f)
             return unitTransform.right;
         
-        if (Vector3.Dot(interactionDirection, unitTransform.right) < -0.3f)
+        if (Vector3.Dot(interactionDirection, unitTransform.right) < -0.2f)
             return - unitTransform.right;
 
         return Vector3.zero;
