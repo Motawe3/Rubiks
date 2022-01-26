@@ -2,19 +2,19 @@
 
 public class SliceRotationCommand
 {
-    public Vector3 hitUnitPosition { get; private set; }
-    public Vector3 hitFacePosition { get; private set; }
-    public Vector3 rotationDirection { get; private set; }
+    public Vector3 HitUnitPosition { get; private set; }
+    public Vector3 HitPointPosition { get; private set; }
+    public Vector3 RotationDirection { get; private set; }
 
-    public SliceRotationCommand(Vector3 hitUnitPosition, Vector3 hitFacePosition, Vector3 rotationDirection)
+    public SliceRotationCommand(Vector3 hitUnitPosition, Vector3 hitPointPosition, Vector3 rotationDirection)
     {
-        this.hitUnitPosition = hitUnitPosition;
-        this.hitFacePosition = hitFacePosition;
-        this.rotationDirection = rotationDirection;
+        this.HitUnitPosition = hitUnitPosition;
+        this.HitPointPosition = hitPointPosition;
+        this.RotationDirection = rotationDirection;
     }
 
     public SliceRotationCommand UndoCommand()
     {
-        return new SliceRotationCommand(hitUnitPosition , hitFacePosition, -rotationDirection);
+        return new SliceRotationCommand(HitUnitPosition , HitPointPosition, -RotationDirection);
     }
 }

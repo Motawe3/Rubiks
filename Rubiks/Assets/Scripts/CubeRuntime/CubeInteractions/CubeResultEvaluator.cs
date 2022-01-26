@@ -6,7 +6,6 @@ using UnityEngine;
 public class CubeResultEvaluator : MonoBehaviour
 {
     private Cube3D cube3D;
-    public static Action OnCubeSolved;
     
     public void Start()
     {
@@ -98,13 +97,15 @@ public class CubeResultEvaluator : MonoBehaviour
 
     private void EvaluateCubeSolving()
     {
+        if(GetComponent<CubeScrambler>().IsScrambling) return;
+        
         foreach (var face in cube3D.cubeModel.faces)
         {
             var color = face.cells.First();
             if(face.cells.Any(x => x != color))
-                break;
+                return;
         }
         
-        OnCubeSolved?.Invoke();
+        GameManager.Instance.WinGame();
     }
 }

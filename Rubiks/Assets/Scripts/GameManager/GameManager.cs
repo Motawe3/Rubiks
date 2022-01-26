@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public Action OnGameStarted;
     public Action OnGameCleared;
     public Action OnGameEnded;
+    public Action OnGameWon;
 
     #region Singleton
 
@@ -111,4 +112,11 @@ public class GameManager : MonoBehaviour
         Destroy(currentCube3D.gameObject);
         currentCube3D = null;
     }
+
+    public void WinGame()
+    {
+        InteractionManager.Instance.EnablePlayerInteraction(false);
+        OnGameWon?.Invoke();
+    }
+    
 }

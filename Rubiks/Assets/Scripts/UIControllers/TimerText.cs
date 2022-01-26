@@ -11,12 +11,6 @@ public class TimerText : MonoBehaviour
     private void Update()
     {
         if(!TimeManager.Instance.IsCounting) return;
-        timerText.text = FormatTime(TimeManager.Instance.PlayTime);
-    }
-
-    public string FormatTime(double playTime)
-    {
-        TimeSpan timeSpan = TimeSpan.FromSeconds( playTime );
-        return $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}:{timeSpan.Milliseconds:D3}";
+        timerText.text = TimeManager.Instance.GetFormatedTime();
     }
 }

@@ -10,16 +10,11 @@ public class CubeScrambler : MonoBehaviour
     private Cube3D cube3D;
     private System.Random random = new System.Random();
     
-    public void Start()
-    {
-        cube3D = GameManager.Instance.currentCube3D;
-    }
-    
-    [Button]
-    public void ScrambleCube(int numberOfScrambles = 15)
+    public void ScrambleCube()
     {
         IsScrambling = true;
-        StartCoroutine(Scrambling(numberOfScrambles));
+        cube3D = GameManager.Instance.currentCube3D;
+        StartCoroutine(Scrambling(cube3D.Size * 4));
     }
 
     IEnumerator Scrambling(int numberOfScrambles)
@@ -47,10 +42,20 @@ public class CubeScrambler : MonoBehaviour
         Transform randomCellTransform = cube3D.cells[random.Next(0, cube3D.cells.Count)].transform;
 
         Vector3 hitUnitPosition = randomCellTransform.position;
-        Vector3 hitFacePosition = randomCellTransform.TransformPoint(randomCellTransform.GetComponent<BoxCollider>().center);
-        Vector3 rotationDirection = random.Next(0,10) > 5 ? randomCellTransform.right : -randomCellTransform.right;
+        Vector3 hitPointPosition = randomCellTransform.TransformPoint(randomCellTransform.GetComponent<BoxCollider>().center);
 
-        SliceRotationCommand rotationCommand = new SliceRotationCommand(hitUnitPosition, hitFacePosition, rotationDirection);
+        Vector3 rotationDirection = randomCellTransform.right;
+        int randomFactor = random.Next(0, 100);
+        if(randomFactor < 25)
+            rotationDirection = randomCellTransform.right;
+        else if(randomFactor < 50)
+            rotationDirection = -randomCellTransform.right;
+        else if(randomFactor < 75)
+            rotationDirection = randomCellTransform.up;
+        else if(randomFactor < 100)
+            rotationDirection = -randomCellTransform.up;
+        
+        SliceRotationCommand rotationCommand = new SliceRotationCommand(hitUnitPosition, hitPointPosition, rotationDirection);
         CommandsHistoryManager.PushCommand(rotationCommand);
     }
 }

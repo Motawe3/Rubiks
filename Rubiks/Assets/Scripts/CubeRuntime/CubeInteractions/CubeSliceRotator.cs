@@ -31,6 +31,8 @@ public class CubeSliceRotator : MonoBehaviour
     {
         CommandsHistoryManager.OnCommandPushed -= ExecuteRotation;
         CommandsHistoryManager.OnCommandPoped -= ExecuteRotation;
+        Destroy(rotator);
+        Destroy(destinationRotatorTarget);
     }
 
     private static void CreateRotationHelpers()
@@ -72,8 +74,8 @@ public class CubeSliceRotator : MonoBehaviour
 
     private static Plane CreateRotationPlane(SliceRotationCommand rotationCommand)
     {
-        Plane slicePlane = new Plane(rotationCommand.hitUnitPosition, rotationCommand.hitFacePosition,
-            rotationCommand.hitUnitPosition + rotationCommand.rotationDirection);
+        Plane slicePlane = new Plane(rotationCommand.HitUnitPosition, rotationCommand.HitPointPosition,
+            rotationCommand.HitUnitPosition + rotationCommand.RotationDirection);
         return slicePlane;
     }
 

@@ -48,6 +48,12 @@ public class TimeManager : MonoBehaviour
         IsCounting = isEnabled;
     }
 
+    public string GetFormatedTime()
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds( PlayTime );
+        return $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}:{timeSpan.Milliseconds:D3}";
+    }
+
     private void Update()
     {
         if (IsCounting)

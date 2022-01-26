@@ -78,13 +78,13 @@ public class CubeInteractionCapture : MonoBehaviour
     private void SliceRotationCaptured()
     {
         Vector3 hitUnitPosition = firstHitFace.transform.position;
-        Vector3 hitFacePosition = firstHitFace.transform.TransformPoint(firstHitFace.GetComponent<BoxCollider>().center);
+        Vector3 hitPointPosition = firstHitFace.transform.TransformPoint(firstHitFace.GetComponent<BoxCollider>().center);
         
         interactionDirection = secondHitPoint - firstHitPoint;
         rotationDirection = GetRelativeUnitDirection(interactionDirection , firstHitFace.transform);
         
         if(rotationDirection != Vector3.zero)
-            CommandsHistoryManager.PushCommand(new SliceRotationCommand(hitUnitPosition , hitFacePosition, rotationDirection));
+            CommandsHistoryManager.PushCommand(new SliceRotationCommand(hitUnitPosition , hitPointPosition, rotationDirection));
     }
 
     private Vector3 GetRelativeUnitDirection(Vector3 interactionDirection , Transform unitTransform)
